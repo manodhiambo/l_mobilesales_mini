@@ -36,75 +36,93 @@ dependencies:
   flutter:
     sdk: flutter
 
+## Installing
 
-### Installing
-<ol>
-<li>Clone the repository:</li>
+1. **Clone the repository:**
 
-git clone https://github.com/yourusername/l_mobilesales_mini.git
+   ```bash
+   git clone https://github.com/yourusername/l_mobilesales_mini.git
 
-<li>Navigate to the project directory:</li>
+2. **Navigate to the project directory:**
+
 cd l_mobilesales_mini
 
-<li>Install the dependencies:</li>
+
+3. **Install the dependencies:**
+
 flutter pub get
 
-<li>Set up Firebase:</li>
-<ul>
-<li>Add your Firebase project configuration files as mentioned in the prerequisites.</li>
-<li>Initialize Firebase in your app by calling Firebase.initializeApp() before running the app.</li>
-</ul>
+4. **Set up Firebase:**
 
-<li>Run the app:</li>
-For Android or iOS, you can run the app on a device or emulator:
+-Add your Firebase project configuration files as mentioned in the prerequisites.
+
+-Initialize Firebase in your app by calling Firebase.initializeApp() before running the app.
+5. **Run the app:**
+For Android or iOS, run the app on a device or emulator:
 
 flutter run
-</ol>
 
-<br><br>
 ### Assumptions
-<ul>
-<li>Firebase Authentication: The app assumes that users are authenticated using Firebase Authentication with an email and password.</li>
-<li>Cloud Firestore: The app assumes Firestore will be used to store sales data such as daily summaries, performance charts, and inventory status.</li>
-<li>Device Permissions: For certain features (like notifications or camera), device permissions are assumed to be handled by Flutter plugins (e.g., firebase_messaging, image_picker).</li>
-</ul>
+-Firebase Authentication: The app assumes that users are authenticated using Firebase Authentication with an email and password.
 
-<br><br>
+-Cloud Firestore: Firestore is assumed to store sales data such as daily summaries, performance charts, and inventory status.
+
+-Device Permissions: For features like notifications or camera, permissions are assumed to be handled by Flutter plugins (e.g., firebase_messaging, image_picker).
 
 ### Architecture Decisions
 
-<ol>
-<li>State Management</li>
-<p>We have used a combination of Provider and Riverpod for state management. This provides a clean and flexible way to manage application state:</p>
-<ul>
-<li>Provider: We use Provider to manage the DashboardController state and propagate data across the app</li>
-<li>Riverpod: We utilize Riverpod for dependency injection and more advanced state management, ensuring that we can easily scale the app with more state providers.</li>
-</ul>
+1. **State Management**
+We use a combination of Provider and Riverpod for state management:
 
-<li>Routing and Navigation</li>
-<p>The app uses Named Routes for navigation between screens, which simplifies the management of navigation and URL mapping (especially when the app grows). The routes are defined in a separate AppRoutes class, and navigation is managed by Navigator.pushReplacementNamed for seamless transitions.</p>
-<li>UI Design</li>
-<p>The app adopts a responsive design approach:</p>
-<ul>
-<li>A mobile-first design is used with SingleChildScrollView and Column widgets to ensure that content adjusts well on different screen sizes.</li>
-<li>Material Design principles are followed to ensure a clean and modern UI with familiar patterns for the user.</li>
-<li>The app’s UI includes various widgets such as DashboardHeader, DailySummaryCard, PerformanceChart, and InventoryStatusSummary, all of which allow for modularity and ease of maintenance.</li>
-</ul>
+Provider is used to manage the DashboardController state and propagate data across the app.
 
-<br><br>
-<li>Authentication Flow</li>
-<p>The app uses Firebase Authentication for user login and registration:</p>
-<ul>
-<li>The login screen allows users to enter their credentials (email and password), and if authentication fails, an error message is displayed.</li>
-<li>After a successful login, users are navigated to the home screen/dashboard, where sales-related data is displayed.</li>
-</ul>
+Riverpod is used for dependency injection and advanced state management, enabling scalability.
 
-<li>Error Handling</li>
-<ul>
-<li>Basic error handling is incorporated in the login and registration flows. When an error occurs (e.g., wrong credentials), the error is caught and displayed on the UI.</li>
-<li>A loading indicator (CircularProgressIndicator) is shown during data fetching or authentication processes to enhance user experience.</li>
-</ul>
-</ol>
+2. **Firebase for Backend**
+Firebase was chosen for its ease of use and strong Flutter integration:
+
+Authentication (with email/password)
+
+Firestore for storing sales data and user activity
+
+Firebase Storage for assets (future use)
+
+3. **Routing and Navigation**
+The app uses Named Routes for easier navigation.
+
+Defined in a separate AppRoutes class.
+
+Navigation is managed using Navigator.pushReplacementNamed.
+
+4. **UI Design**
+The UI follows Material Design principles with a mobile-first responsive layout:
+
+Uses SingleChildScrollView and Column for adaptive sizing.
+
+Reusable widgets include:
+
+DashboardHeader
+
+DailySummaryCard
+
+PerformanceChart
+
+InventoryStatusSummary
+
+5. **Authentication Flow**
+Users log in with email and password.
+
+If authentication fails, error messages are shown.
+
+On success, users are redirected to the Dashboard.
+
+6. **Error Handling**
+Basic error catching during login and registration.
+
+Error messages are displayed on the UI.
+
+Loading indicators (CircularProgressIndicator) show during operations for better UX.
 
 ### Conclusion
-<p>The l_mobilesales_mini app provides a robust and scalable foundation for a sales mobile application. It integrates Firebase for authentication and data storage, uses Riverpod and Provider for state management, and offers a clean UI following Material Design principles.</p>
+The l_mobilesales_mini app provides a robust and scalable foundation for a mobile sales application. It integrates Firebase for backend services, uses Riverpod and Provider for state management, and features a clean UI based on Material Design principles.
+
