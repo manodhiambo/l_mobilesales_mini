@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   bool _isLoading = false;
   String? _errorMessage;
+  bool _obscurePassword = true; // Added this line
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +43,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextFormField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _obscurePassword, // Use the toggle flag here
                 decoration: InputDecoration(
                   labelText: 'Password',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.visibility),
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    ),
                     onPressed: () {
                       setState(() {
-                        _passwordController.text = '';
+                        _obscurePassword = !_obscurePassword; // Toggle the flag
                       });
                     },
                   ),
@@ -118,10 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     bool isAuthenticated = await context.read<AuthController>().login(
-      _usernameController.text,
-      _passwordController.text,
-      _rememberMe,
-    );
+          _usernameController.text,
+          _passwordController.text,
+          _rememberMe,
+        );
 
     setState(() {
       _isLoading = false;
@@ -136,4 +139,3 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 }
-

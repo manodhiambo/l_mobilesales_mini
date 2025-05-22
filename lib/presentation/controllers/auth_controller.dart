@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:l_mobilesales_mini/data/services/auth_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:l_mobilesales_mini/data/services/auth_service.dart';
 
 class AuthController extends ChangeNotifier {
   bool _isAuthenticated = false;
@@ -11,22 +11,23 @@ class AuthController extends ChangeNotifier {
   String? get username => _username;
 
   Future<bool> login(String username, String password, bool rememberMe) async {
-    bool isAuthenticated = await AuthService.authenticate(username, password);
+    bool success = await AuthService.authenticate(username, password);
 
-    if (isAuthenticated) {
+    if (success) {
       _username = username;
       _isAuthenticated = true;
+
       if (rememberMe) {
         await _storage.write(key: 'username', value: username);
-        await _storage.write(key: 'password', value: password);  // Handle password securely
+        await _storage.write(key: 'password', value: password); // Encrypt this in production
       }
-      notifyListeners();
     } else {
       _isAuthenticated = false;
-      notifyListeners();
+      _username = null;
     }
 
-    return isAuthenticated;
+    notifyListeners();
+    return success;
   }
 
   Future<void> logout() async {
@@ -39,11 +40,15 @@ class AuthController extends ChangeNotifier {
 
   Future<void> checkAuthentication() async {
     String? storedUsername = await _storage.read(key: 'username');
-    if (storedUsername != null) {
-      _isAuthenticated = true;
-      _username = storedUsername;
-      notifyListeners();
+    String? storedPassword = await _storage.read(key: 'password');
+
+    if (storedUsername != null && storedPassword != null) {
+      bool success = await AuthService.authenticate(storedUsername, storedPassword);
+      if (success) {
+        _username = storedUsername;
+        _isAuthenticated = true;
+        notifyListeners();
+      }
     }
   }
 }
-
